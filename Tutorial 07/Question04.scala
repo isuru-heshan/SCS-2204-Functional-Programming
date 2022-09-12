@@ -13,16 +13,15 @@ object Question04 {
     }
   }
   val overdraft = (b: List[Account]) => b.filter(x => x.balance < 0)
-  //val balance = (b: List[Account]): Double = {
-    //b.reduce((ac1: Account, ac2: Account):Double = {ac1.balance + ac2.balance} )
+  val balance = (b: List[Account]) => b.reduce((ac1: Account, ac2: Account) => new Account("Balance",0, (ac1.balance + ac2.balance)))
   val interest = (b: List[Account]) =>
     b.map(_ match {
-      case x if x.balance < 0 => x.balance - x.balance * 0.1
-      case x if x.balance > 0 => x.balance + x.balance * 0.5
+      case x if x.balance < 0 => new Account(x.nic, x.acnumber, x.balance + x.balance * 0.1)
+      case x if x.balance > 0 => new Account(x.nic, x.acnumber, x.balance + x.balance * 0.05)
     })
 
   def main(args: Array[String]) = {
-    var bank: List[Account] = List()
+    
 
     var ac1 = new Account("123", 123, 50000)
     var ac2 = new Account("234", 234, 50000)
@@ -31,7 +30,14 @@ object Question04 {
     var ac5 = new Account("567", 567, 10000)
     var ac6 = new Account("678", 678, -10000)
 
-    bank(ac1, ac2, ac3, ac4, ac5, ac6)
-    println(overdraft(bank))
+    var bank: List[Account] = List(ac1, ac2, ac3, ac4, ac5, ac6)
+
+    println("Accounts With Negative Balance : " + overdraft(bank))
+    println("Balance : " + balance(bank).balance)
+
+    println(interest(bank))
+
+    println("Balance After Addoing interest : " + balance(interest(bank)).balance)
+
   }
 }
